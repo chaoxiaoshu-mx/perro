@@ -5,15 +5,15 @@ php artisan make:auth
 ```
 
 # 二、后台
-1、创建管理员(admin_users)数据表
+## 1、创建管理员(admin_users)数据表
 ```php
 php artisan make:migration create_admin_users_table
 ```
-2、生成模型
+## 2、生成模型
 ```php
 php artisan make:model App/AdminUser
 ```
-3、后台路由
+## 3、后台路由
 ```php
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     	// 管理员后台登录
@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     	});
 });
 ```
-4、新建管理员登录控制器：
+## 4、新建管理员登录控制器：
 ```php
 php artisan make:controller Admin/LoginController
 ```
@@ -155,7 +155,7 @@ protected function guard()
     }
 ```
 
-5、添加门卫（guards）
+## 5、添加门卫（guards）
 ```php
 'guards' => [
         'web' => [
@@ -189,7 +189,7 @@ protected function guard()
         // ],
     ],    
 ```
-6、创建后台管理认证中间件
+## 6、创建后台管理认证中间件
 ```php
 php artisan make:middleware AdminAuthMiddleware
 ```
@@ -228,7 +228,7 @@ class AdminAuthMiddleware
 }
 ```
 
-7、创建后台管理登录跳转中间件，用于有些操作在登录之后的跳转
+## 7、创建后台管理登录跳转中间件，用于有些操作在登录之后的跳转
 ```php
 php artisan make:middleware GuestAdmin
 ```
@@ -244,14 +244,14 @@ php artisan make:middleware GuestAdmin
     }
 php artisan make:middleware GuestAdmin
 ```
-8、注册中间件
+## 8、注册中间件
 ```php
 protected $routeMiddleware = [
     'auth.admin' => \App\Http\Middleware\AdminAuthMiddleware::class,
     'guest.admin' => \App\Http\Middleware\GuestAdmin::class,
 ];
 ```
-9、处理注销
+## 9、处理注销
 经过上面的步骤，已经实现了前后台分离登录，但是不管是在前台注销，还是在后台注销，都销毁了所有的 session，导致前后台注销连在一起。所以我们还要对注销的方法处理一下。
 原来的 logout 方法是写在 Illuminate\Foundation\Auth\AuthenticatesUsers 里
 ```php
