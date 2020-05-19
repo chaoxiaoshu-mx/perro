@@ -1,7 +1,8 @@
 一 、前台：
 生成用户认证所需的路由和模板
+```php
 php artisan make:auth
-
+```
 
 二、后台
 1、创建管理员(admin_users)数据表
@@ -139,6 +140,7 @@ class LoginController extends Controller
 ```
 
 注意：
+```php
 public function __construct()
     {
         // 这里的guest.admin就是Kernel里自定义的中间件
@@ -151,9 +153,10 @@ protected function guard()
         // 这里的 admin 就是config/auth里自定义的门卫
         return auth()->guard('admin');
     }
-
+```
 
 5、添加门卫（guards）
+```php
 'guards' => [
         'web' => [
             'driver' => 'session',
@@ -185,11 +188,12 @@ protected function guard()
         //     'table' => 'users',
         // ],
     ],    
-
+```
 6、创建后台管理认证中间件
+```php
 php artisan make:middleware AdminAuthMiddleware
-
-
+```
+```php
 <?php
 
 namespace App\Http\Middleware;
@@ -222,12 +226,13 @@ class AdminAuthMiddleware
         return $next($request);
     }
 }
-
+```
 
 7、创建后台管理登录跳转中间件，用于有些操作在登录之后的跳转
+```php
 php artisan make:middleware GuestAdmin
-
-
+```
+```php
 <?php
     public function handle($request, Closure $next)
     {
@@ -237,29 +242,34 @@ php artisan make:middleware GuestAdmin
  
         return $next($request);
     }
-
+php artisan make:middleware GuestAdmin
+```
 8、注册中间件
+```php
 protected $routeMiddleware = [
     'auth.admin' => \App\Http\Middleware\AdminAuthMiddleware::class,
     'guest.admin' => \App\Http\Middleware\GuestAdmin::class,
 ];
-
+```
 9、处理注销
 经过上面的步骤，已经实现了前后台分离登录，但是不管是在前台注销，还是在后台注销，都销毁了所有的 session，导致前后台注销连在一起。所以我们还要对注销的方法处理一下。
 原来的 logout 方法是写在 Illuminate\Foundation\Auth\AuthenticatesUsers 里
+```php
 public function logout(Request $request)
     {
         $this->guard()->logout();
         $request->session()->invalidate();
         return $this->loggedOut($request) ?: redirect('/');
     }
-
+```
 注意这一句
+```php
 $request->session()->invalidate();
-
+```
 的意思是将所有的 session 全部清除，这里不分前台、后台，所以要对这里进行改造。
 因为前台、后台注销都要修改，所以我们新建一个 trait，前后台都可以使用。
 新建一个文件 app/Extensions/AuthenticatesLogout.php
+```php
 <?php
 namespace App\Extensions;
 use Illuminate\Http\Request;
@@ -273,13 +283,15 @@ trait AuthenticatesLogout
 		return redirect('/');
 	}
 }
-
+```
 我们将上面的那一句改成
+```php
  $request->session()->forget($this->guard()->getName());
-
+```
 只是删除掉当前 guard 所创建的 session，这样就达到了分别注销的目的。
 
 修改 Auth/LoginController.php 和 Admin/LoginController.php
+```php
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Extensions\AuthenticatesLogout;
 class LoginController extends Controller
@@ -290,5 +302,5 @@ class LoginController extends Controller
     }
     // ...
 }    
-
+```
 到这里，就完成了整个不同用户表登录认证的过程。
