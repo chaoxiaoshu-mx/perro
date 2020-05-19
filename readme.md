@@ -1,10 +1,10 @@
-一 、前台：
+# 一 、前台：
 生成用户认证所需的路由和模板
 ```php
 php artisan make:auth
 ```
 
-二、后台
+# 二、后台
 1、创建管理员(admin_users)数据表
 ```php
 php artisan make:migration create_admin_users_table
