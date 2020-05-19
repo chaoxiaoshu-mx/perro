@@ -1,5 +1,3 @@
-Laravel搭建前后台分离的登录模块
-
 一 、前台：
 生成用户认证所需的路由和模板
 php artisan make:auth
@@ -7,12 +5,15 @@ php artisan make:auth
 
 二、后台
 1、创建管理员(admin_users)数据表
+```php
 php artisan make:migration create_admin_users_table
-
+```
 2、生成模型
+```php
 php artisan make:model App/AdminUser
-
+```
 3、后台路由
+```php
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     	// 管理员后台登录
     	Route::get('login', 'LoginController@showLoginForm');
@@ -22,11 +23,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     		Route::get('index', 'HomeController@index');
     	});
 });
-
+```
 4、新建管理员登录控制器：
+```php
 php artisan make:controller Admin/LoginController
+```
 
-
+```php
 <?php
 
 namespace App\Http\Controllers\Admin;
@@ -133,7 +136,7 @@ class LoginController extends Controller
         return 'username';
     }
 }
-
+```
 
 注意：
 public function __construct()
