@@ -16,15 +16,6 @@ php artisan make:model App/AdminUser
 3、后台路由
 ```php
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
-<<<<<<< HEAD
-        // 管理员后台登录
-        Route::get('login', 'LoginController@showLoginForm');
-        Route::post('logout', 'LoginController@logout');
-
-        Route::group(['middleware' => 'auth.admin'], function() {
-            Route::get('index', 'HomeController@index');
-        });
-=======
     	// 管理员后台登录
     	Route::get('login', 'LoginController@showLoginForm');
     	Route::post('logout', 'LoginController@logout');
@@ -32,7 +23,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
     	Route::group(['middleware' => 'auth.admin'], function() {
     		Route::get('index', 'HomeController@index');
     	});
->>>>>>> cfb3950b3d1fe8546291ddf8c43e0593226817eb
 });
 ```
 4、新建管理员登录控制器：
@@ -285,15 +275,6 @@ namespace App\Extensions;
 use Illuminate\Http\Request;
 trait AuthenticatesLogout
 {
-<<<<<<< HEAD
-        public function logout(Request $request)
-        {
-            $this->guard()->logout();
-            $request->session()->forget($this->guard()->getName());
-        $request->session()->regenerate();
-        return redirect('/');
-    }
-=======
     	public function logout(Request $request)
     	{
     		$this->guard()->logout();
@@ -301,7 +282,6 @@ trait AuthenticatesLogout
 		$request->session()->regenerate();
 		return redirect('/');
 	}
->>>>>>> cfb3950b3d1fe8546291ddf8c43e0593226817eb
 }
 ```
 我们将上面的那一句改成
