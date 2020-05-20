@@ -251,7 +251,7 @@ protected $routeMiddleware = [
     'guest.admin' => \App\Http\Middleware\GuestAdmin::class,
 ];
 ```
-## 9、处理注销
+##9 、处理注销
 经过上面的步骤，已经实现了前后台分离登录，但是不管是在前台注销，还是在后台注销，都销毁了所有的 session，导致前后台注销连在一起。所以我们还要对注销的方法处理一下。
 原来的 logout 方法是写在 Illuminate\Foundation\Auth\AuthenticatesUsers 里
 ```php

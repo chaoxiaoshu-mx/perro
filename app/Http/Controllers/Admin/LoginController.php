@@ -33,6 +33,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
+        Debugbar::addMessage('showLoginForm', 'adminlogin');
         return view('admin.login');
     }
 
